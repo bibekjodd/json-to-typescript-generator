@@ -1,11 +1,9 @@
 import useCode from "@/hooks/useCode";
-import { HiOutlineClipboardCheck } from "react-icons/hi";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import { TbClipboardText } from "react-icons/tb";
-
 import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { Button } from "./ui/button";
-import { TrashIcon } from "@heroicons/react/24/outline";
 
 export default function CodeEditor() {
   const input = useCode((state) => state.input);
@@ -20,10 +18,6 @@ export default function CodeEditor() {
           <Button className="space-x-2 bg-white/70 hover:bg-white/60 active:bg-white/50">
             <span>paste</span>
             <TbClipboardText className="h-5 w-5" />
-          </Button>
-          <Button className="space-x-2 bg-white/70 hover:bg-white/60 active:bg-white/50">
-            <span>convert</span>
-            <HiOutlineClipboardCheck className="h-5 w-5" />
           </Button>
           <Button
             onClick={() => inputChanged("")}
