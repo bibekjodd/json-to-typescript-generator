@@ -4,10 +4,21 @@ import { TbClipboardText } from "react-icons/tb";
 import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 export default function CodeEditor() {
   const input = useCode((state) => state.input);
   const inputChanged = useCode((state) => state.inputChanged);
+
+  const pasteFromClipboard = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      inputChanged(text);
+    } catch (error) {
+      console.log(error);
+      toast.error("User has denied clipboard permission");
+    }
+  };
 
   return (
     <div className="h-full w-full">
@@ -15,7 +26,10 @@ export default function CodeEditor() {
         <h3 className="mr-auto text-lg font-bold">JSON</h3>
 
         <div className="flex space-x-3">
-          <Button className="space-x-2 bg-white/70 hover:bg-white/60 active:bg-white/50">
+          <Button
+            onClick={pasteFromClipboard}
+            className="space-x-2 bg-white/70 hover:bg-white/60 active:bg-white/50"
+          >
             <span>paste</span>
             <TbClipboardText className="h-5 w-5" />
           </Button>

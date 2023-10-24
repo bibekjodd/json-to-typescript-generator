@@ -12,8 +12,12 @@ export default function TransformedCode() {
   const rootTypeNameChanged = useCode((state) => state.rootTypeNameChanged);
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(resolvedTypes);
-    toast.success("Copied to clipboard");
+    try {
+      navigator.clipboard.writeText(resolvedTypes);
+      toast.success("Copied to clipboard");
+    } catch (err) {
+      toast.error("User has denied clipboard permission");
+    }
   };
 
   return (

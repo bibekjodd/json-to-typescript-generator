@@ -20,7 +20,7 @@ const useCode = create<UseCode>((set, get) => ({
       lemon: "#22f3ce",
   }
  `,
-  rootTypeName: "Root",
+  rootTypeName: "",
   resolvedTypes: `
   type Root = {
     fruits: string[];
