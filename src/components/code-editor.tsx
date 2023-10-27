@@ -1,10 +1,10 @@
-import useCode from "@/hooks/useCode";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { TbClipboardText } from "react-icons/tb";
 import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { Button } from "./ui/button";
 import { toast } from "sonner";
+import useCode from "../hooks/useCode";
+import { Button } from "./ui/button";
 
 export default function CodeEditor() {
   const input = useCode((state) => state.input);
@@ -15,7 +15,6 @@ export default function CodeEditor() {
       const text = await navigator.clipboard.readText();
       inputChanged(text);
     } catch (error) {
-      console.log(error);
       toast.error("User has denied clipboard permission");
     }
   };

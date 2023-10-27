@@ -12,35 +12,34 @@ type UseCode = {
 };
 
 const useCode = create<UseCode>((set, get) => ({
-  input: `
-  {
-    fruits: ["apple", "mango", "banana", "orange"],
-    colors: {
-      orange: "#fa234c",
-      lemon: "#22f3ce",
-  }
+  input: `{
+  fruits: ["apple", "mango", "banana", "orange"],
+  colors: {
+    orange: "#fa234c",
+    lemon: "#22f3ce",
+}
  `,
   rootTypeName: "",
-  resolvedTypes: `
-  type Root = {
-    fruits: string[];
-    colors: {
-      orange: string;
-      lemon: string;
-    };
+  resolvedTypes: `type Root = {
+  fruits: string[];
+  colors: {
+    orange: string;
+    lemon: string;
   };
+};
   `,
   inputChanged(input) {
-    const resolvedTypes = converter(input);
-    set({ input, resolvedTypes });
-    navigator.clipboard.writeText(input);
+    set({ input });
+    get().convert();
   },
   rootTypeNameChanged(rootTypeName) {
     set({ rootTypeName });
+    get().convert();
   },
   convert() {
-    const resolvedTypes = converter(get().input);
-    set({ resolvedTypes });
+    const { input, rootTypeName } = get();
+    const { result, isError } = converter(input, rootTypeName || "Root");
+    if (!isError) set({ resolvedTypes: result });
   },
 }));
 export default useCode;
