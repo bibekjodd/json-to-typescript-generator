@@ -1,21 +1,19 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import useCode from "@/hooks/useCode";
 import { MdContentCopy } from "react-icons/md";
 import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
 import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
 import { toast } from "sonner";
 
 export default function TransformedCode() {
-  const generatedTypes = JSON.stringify(
-    useCode((state) => state.generatedTypes),
-  );
+  const generatedTypes = useCode((state) => state.generatedTypes);
   const rootTypeName = useCode((state) => state.rootTypeName);
   const rootTypeNameChanged = useCode((state) => state.rootTypeNameChanged);
 
   const copyToClipboard = () => {
     try {
-      navigator.clipboard.writeText(generatedTypes);
+      navigator.clipboard.writeText(JSON.stringify(generatedTypes));
       toast.success("Copied to clipboard");
     } catch (err) {
       toast.error("User has denied clipboard permission");
@@ -56,7 +54,7 @@ export default function TransformedCode() {
           wrapLines
           wrapLongLines
         >
-          {generatedTypes}
+          {JSON.stringify(generatedTypes)}
         </SyntaxHighlighter>
       </section>
     </div>

@@ -1,6 +1,6 @@
 import { TypeGenerator } from "@/lib/type-generator";
 import { create } from "zustand";
-export type GenereatedTypes = {
+export type GeneratedTypes = {
   name: string;
   type: string[] | { [key: string]: string[] | undefined };
 }[];
@@ -8,8 +8,10 @@ export type GenereatedTypes = {
 type UseCode = {
   input: string;
   rootTypeName: string;
-  generatedTypes: GenereatedTypes;
+  generatedTypes: GeneratedTypes;
+  isInvalidJSON: boolean;
 
+  setIsInvalidJSON: (state: boolean) => void;
   inputChanged: (input: string) => void;
   convert: () => void;
   rootTypeNameChanged: (rootTypeName: string) => void;
@@ -29,6 +31,7 @@ const useCode = create<UseCode>((set, get) => ({
     { name: "Root", type: { fruits: ["array", "string"], colors: ["Colors"] } },
     { name: "Colors", type: { orange: ["string"], lemon: ["string"] } },
   ],
+  isInvalidJSON: false,
   inputChanged(input) {
     set({ input });
     get().convert();
@@ -37,11 +40,19 @@ const useCode = create<UseCode>((set, get) => ({
     set({ rootTypeName });
     get().convert();
   },
+  setIsInvalidJSON(state) {
+    set({ isInvalidJSON: state });
+  },
   convert() {
     const { input, rootTypeName } = get();
-    const { generatedTypes } = new TypeGenerator(input, rootTypeName || "root");
-    if (generatedTypes.length) {
-      set({ generatedTypes });
+    const { generatedTypes, isInvalidJSON } = new TypeGenerator(
+      input,
+      rootTypeName || "root",
+    );
+    if (isInvalidJSON) {
+      set({ isInvalidJSON });
+    } else {
+      set({ generatedTypes, isInvalidJSON: false });
     }
   },
 }));

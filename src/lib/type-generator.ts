@@ -1,4 +1,4 @@
-import { GenereatedTypes } from "@/hooks/useCode";
+import { GeneratedTypes } from "@/hooks/useCode";
 import { jsonFormatter } from "./format-json";
 import { capitalize, getKeysFromObjectArray, isArray, isObject } from "./utils";
 
@@ -20,7 +20,8 @@ export class TypeGenerator {
   #rootName = "root";
   #includedTypes = [] as IncludedTypes;
   #includedTypeNames = {} as IncludedTypeNames;
-  generatedTypes = [] as GenereatedTypes;
+  generatedTypes = [] as GeneratedTypes;
+  isInvalidJSON = false;
 
   constructor(json: string, rootName: string) {
     this.#rootName = capitalize(rootName);
@@ -31,6 +32,7 @@ export class TypeGenerator {
       };
       this.#generateTypes();
     }
+    this.isInvalidJSON = !data;
   }
 
   #generateTypes() {

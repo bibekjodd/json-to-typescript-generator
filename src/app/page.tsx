@@ -1,6 +1,6 @@
 "use client";
 import CodeEditor from "@/components/code-editor";
-import TransformedCode from "@/components/transformed-code";
+import TransformedCode from "@/components/transformed-code/index";
 
 export default function page() {
   return (
