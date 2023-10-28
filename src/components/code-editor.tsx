@@ -1,11 +1,11 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
+import { useEffect, useLayoutEffect } from "react";
+import AceEditor from "react-ace";
 import { TbClipboardText } from "react-icons/tb";
-import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
-import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { toast } from "sonner";
 import useCode from "../hooks/useCode";
 import { Button } from "./ui/button";
-import { useEffect, useLayoutEffect } from "react";
+import { getValidJSON } from "@/lib/format-json";
 
 export default function CodeEditor() {
   const input = useCode((state) => state.input);
@@ -23,16 +23,26 @@ export default function CodeEditor() {
   useLayoutEffect(() => {
     try {
       const oldJSON = localStorage.getItem("old-json") as string;
-      const data = JSON.parse(oldJSON);
-      if (data instanceof Object && data !== null) {
-        inputChanged(oldJSON);
-      }
-    } catch (error) {}
+      const data = getValidJSON(oldJSON);
+      if (data) inputChanged(oldJSON);
+    } catch (error) {
+      inputChanged(
+        `{
+  "fruits": ["apple", "mango", "banana", "orange"],
+  "colors": {
+    "orange": "#fa234c",
+    "lemon": "#22f3ce"
+  }
+}`,
+      );
+    }
   }, []);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      localStorage.setItem("old-json", input);
+      if (getValidJSON(input)) {
+        localStorage.setItem("old-json", input);
+      }
     }, 1000);
     return () => {
       clearTimeout(timeout);
@@ -62,27 +72,31 @@ export default function CodeEditor() {
         </div>
       </div>
 
-      <div className="relative mt-5 flex h-full border-rose-900  md:border-r-2">
-        <textarea
-          className="absolute inset-0 resize-none bg-transparent p-2 font-mono text-transparent caret-white outline-none "
+      <div className="bg relative mt-5 flex h-full border-rose-900 md:border-r-2">
+        <AceEditor
+          className="h-full w-full "
           value={input}
-          onChange={(e) => inputChanged(e.target.value)}
-          autoFocus
-        />
-        <SyntaxHighlighter
-          language="typescript"
-          style={atomOneDark}
-          customStyle={{
-            flex: "1",
-            background: "transparent",
-            height: "100%",
-            width: "100%",
+          onChange={(input) => {
+            inputChanged(input);
           }}
-          wrapLines
-          wrapLongLines
-        >
-          {input}
-        </SyntaxHighlighter>
+          focus
+          mode="typescript"
+          theme="one_dark"
+          fontSize="16px"
+          width="100%"
+          height="100%"
+          highlightActiveLine={true}
+          wrapEnabled
+          setOptions={{
+            enableLiveAutocompletion: true,
+            showLineNumbers: false,
+            showFoldWidgets: false,
+            showGutter: false,
+            showInvisibles: false,
+            showPrintMargin: false,
+            tabSize: 2,
+          }}
+        />
       </div>
     </div>
   );

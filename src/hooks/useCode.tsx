@@ -1,4 +1,5 @@
 import { TypeGenerator } from "@/lib/type-generator";
+import { typeResolver } from "@/lib/type-resolver";
 import { toast } from "sonner";
 import { create } from "zustand";
 export type GeneratedTypes = {
@@ -9,10 +10,10 @@ export type GeneratedTypes = {
 type UseCode = {
   input: string;
   rootTypeName: string;
-  generatedTypes: GeneratedTypes;
   isInvalidJSON: boolean;
   useInterface: boolean;
 
+  resolvedTypes: string;
   setUseInterface: (arg: boolean) => void;
   setIsInvalidJSON: (state: boolean) => void;
   inputChanged: (input: string) => void;
@@ -21,21 +22,11 @@ type UseCode = {
 };
 
 const useCode = create<UseCode>((set, get) => ({
-  input: `{
-  "fruits": ["apple", "mango", "banana", "orange"],
-  "colors": {
-    "orange": "#fa234c",
-    "lemon": "#22f3ce"
-  }
-}
-`,
+  input: "",
   useInterface: false,
   rootTypeName: "",
-  generatedTypes: [
-    { name: "Root", type: { fruits: ["array", "string"], colors: ["Colors"] } },
-    { name: "Colors", type: { orange: ["string"], lemon: ["string"] } },
-  ],
   isInvalidJSON: false,
+  resolvedTypes: "",
   setUseInterface(arg) {
     set({ useInterface: arg });
   },
@@ -63,7 +54,10 @@ const useCode = create<UseCode>((set, get) => ({
         toast.error("Invalid JSON", { position: "bottom-left" });
       }
     } else {
-      set({ generatedTypes, isInvalidJSON: false });
+      set({
+        resolvedTypes: typeResolver(generatedTypes),
+        isInvalidJSON: false,
+      });
     }
   },
 }));

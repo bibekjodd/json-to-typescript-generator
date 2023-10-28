@@ -1,6 +1,6 @@
 import { GeneratedTypes } from "@/hooks/useCode";
-import { jsonFormatter } from "./format-json";
 import { capitalize, getKeysFromObjectArray, isArray, isObject } from "./utils";
+import { formatObject, getValidJSON } from "./format-json";
 
 type GeneratedTypeForObjects = {
   [key: string]: string[] | GeneratedTypeForObjects | undefined;
@@ -25,10 +25,10 @@ export class TypeGenerator {
 
   constructor(json: string, rootName: string) {
     this.#rootName = capitalize(rootName);
-    const data = jsonFormatter(json);
+    const data = getValidJSON(json);
     if (data) {
       this.#json = {
-        [this.#rootName]: data,
+        [this.#rootName]: formatObject(data),
       };
       this.#generateTypes();
     }

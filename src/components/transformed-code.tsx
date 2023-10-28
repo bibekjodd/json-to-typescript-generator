@@ -3,17 +3,16 @@ import { Input } from "@/components/ui/input";
 import useCode from "@/hooks/useCode";
 import { MdContentCopy } from "react-icons/md";
 import { toast } from "sonner";
-import MapCode from "./map-code";
+import AceEditor from "react-ace";
 
 export default function TransformedCode() {
   const rootTypeName = useCode((state) => state.rootTypeName);
   const rootTypeNameChanged = useCode((state) => state.rootTypeNameChanged);
+  const resolvedTypes = useCode((state) => state.resolvedTypes);
 
   const copyToClipboard = () => {
     try {
-      const generatedTypes =
-        document.getElementById("generated-types")?.innerText;
-      navigator.clipboard.writeText(generatedTypes || "");
+      navigator.clipboard.writeText(resolvedTypes);
       toast.success("Copied to clipboard");
     } catch (err) {
       toast.error("User has denied clipboard permission");
@@ -21,8 +20,8 @@ export default function TransformedCode() {
   };
 
   return (
-    <div className="h-full w-full text-black">
-      <div className="flex items-center md:px-4">
+    <div className="h-full w-full  text-black">
+      <div className="flex items-center pt-10 md:px-4 md:pt-0">
         <h3 className="mr-auto text-lg font-bold text-white">Typescript</h3>
         <div className="flex flex-shrink items-center space-x-3">
           <Input
@@ -41,8 +40,31 @@ export default function TransformedCode() {
           </Button>
         </div>
       </div>
-      <section id="generated-types" className="mt-5">
-        <MapCode />
+      <section
+        id="generated-types"
+        className="mt-5 h-full w-full overflow-y-auto md:pl-10 lg:pl-0"
+      >
+        <AceEditor
+          className="flex-1"
+          value={resolvedTypes}
+          mode="typescript"
+          theme="one_dark"
+          fontSize="16px"
+          highlightActiveLine={true}
+          readOnly
+          width="100%"
+          height="100%"
+          wrapEnabled
+          setOptions={{
+            enableLiveAutocompletion: false,
+            showLineNumbers: false,
+            showFoldWidgets: false,
+            showGutter: false,
+            showInvisibles: false,
+            showPrintMargin: false,
+            tabSize: 2,
+          }}
+        />
       </section>
     </div>
   );

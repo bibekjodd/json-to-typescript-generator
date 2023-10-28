@@ -1,18 +1,16 @@
 import { isArray, isObject } from "./utils";
 
-export const jsonFormatter = (json: string): Object | undefined => {
+export const getValidJSON = (json: string): undefined | Object => {
   try {
     const data = JSON.parse(json);
-    if (isObject(data) || isArray(data)) {
-      return formatObject(data);
-    }
+    if (isObject(data) || isArray(data)) return data;
     return undefined;
-  } catch (err) {
-    undefined;
+  } catch (error) {
+    return undefined;
   }
 };
 
-function formatObject(obj: any): typeof obj {
+export function formatObject(obj: any): typeof obj {
   for (const key in obj) {
     const value = obj[key];
     if (typeof value === "string") obj[key] = "";
