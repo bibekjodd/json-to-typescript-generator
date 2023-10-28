@@ -21,7 +21,7 @@ export default function CodeEditor() {
 
   return (
     <div className="h-full w-full">
-      <div className="flex items-center px-4">
+      <div className="flex items-center md:px-4">
         <h3 className="mr-auto text-lg font-bold">JSON</h3>
 
         <div className="flex space-x-3">
@@ -42,7 +42,7 @@ export default function CodeEditor() {
         </div>
       </div>
 
-      <div className="relative flex h-full border-r-2 border-rose-900 bg-[#282a36]">
+      <div className="relative mt-5 flex h-full border-rose-900 bg-[#282a36] md:border-r-2">
         <textarea
           className="absolute inset-0 resize-none bg-transparent p-2 font-mono text-transparent caret-white outline-none scrollbar-hide"
           value={input}

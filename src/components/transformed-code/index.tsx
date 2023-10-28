@@ -22,11 +22,11 @@ export default function TransformedCode() {
 
   return (
     <div className="h-full w-full text-black">
-      <div className="flex px-4 ">
+      <div className="flex items-center md:px-4">
         <h3 className="mr-auto text-lg font-bold text-white">Typescript</h3>
-        <div className="flex items-center space-x-3">
+        <div className="flex flex-shrink items-center space-x-3">
           <Input
-            className="bg-white/70 text-black placeholder:text-black/70"
+            className="w-full bg-white/70 text-black placeholder:text-black/70"
             value={rootTypeName}
             onChange={(e) => rootTypeNameChanged(e.target.value)}
             placeholder="Root Type Name..."
@@ -41,7 +41,7 @@ export default function TransformedCode() {
           </Button>
         </div>
       </div>
-      <section className="bg-[#282a36]">
+      <section className="mt-5 bg-[#282a36]">
         <SyntaxHighlighter
           language="typescript"
           style={atomOneDark}
