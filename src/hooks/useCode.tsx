@@ -1,4 +1,5 @@
 import { TypeGenerator } from "@/lib/type-generator";
+import { toast } from "sonner";
 import { create } from "zustand";
 export type GeneratedTypes = {
   name: string;
@@ -55,8 +56,12 @@ const useCode = create<UseCode>((set, get) => ({
       input,
       rootTypeName || "root",
     );
+    toast.dismiss();
     if (isInvalidJSON) {
       set({ isInvalidJSON });
+      if (input !== "") {
+        toast.error("Invalid JSON", { position: "bottom-left" });
+      }
     } else {
       set({ generatedTypes, isInvalidJSON: false });
     }
