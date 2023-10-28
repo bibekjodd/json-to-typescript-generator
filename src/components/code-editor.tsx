@@ -5,6 +5,7 @@ import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { toast } from "sonner";
 import useCode from "../hooks/useCode";
 import { Button } from "./ui/button";
+import { useEffect, useLayoutEffect } from "react";
 
 export default function CodeEditor() {
   const input = useCode((state) => state.input);
@@ -18,6 +19,25 @@ export default function CodeEditor() {
       toast.error("User has denied clipboard permission");
     }
   };
+
+  useLayoutEffect(() => {
+    try {
+      const oldJSON = localStorage.getItem("old-json") as string;
+      const data = JSON.parse(oldJSON);
+      if (data instanceof Object && data !== null) {
+        inputChanged(oldJSON);
+      }
+    } catch (error) {}
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      localStorage.setItem("old-json", input);
+    }, 1000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [input]);
 
   return (
     <div className="h-full w-full">
