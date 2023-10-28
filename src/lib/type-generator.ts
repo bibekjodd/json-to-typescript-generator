@@ -1,6 +1,6 @@
-import { GeneratedTypes } from "@/hooks/useCode";
 import { capitalize, getKeysFromObjectArray, isArray, isObject } from "./utils";
 import { formatObject, getValidJSON } from "./format-json";
+import { GeneratedTypes, typeResolver } from "./type-resolver";
 
 type GeneratedTypeForObjects = {
   [key: string]: string[] | GeneratedTypeForObjects | undefined;
@@ -20,7 +20,8 @@ export class TypeGenerator {
   #rootName = "root";
   #includedTypes = [] as IncludedTypes;
   #includedTypeNames = {} as IncludedTypeNames;
-  generatedTypes = [] as GeneratedTypes;
+  #generatedTypes = [] as GeneratedTypes;
+  resolvedTypes = "";
   isInvalidJSON = false;
 
   constructor(json: string, rootName: string) {
@@ -33,6 +34,7 @@ export class TypeGenerator {
       this.#generateTypes();
     }
     this.isInvalidJSON = !data;
+    this.resolvedTypes = typeResolver(this.#generatedTypes);
   }
 
   #generateTypes() {
@@ -46,7 +48,7 @@ export class TypeGenerator {
       });
     }
 
-    this.generatedTypes = this.#includedTypes.map((type) => {
+    this.#generatedTypes = this.#includedTypes.map((type) => {
       return {
         name: type.name,
         type: type.type,

@@ -1,11 +1,6 @@
 import { TypeGenerator } from "@/lib/type-generator";
-import { typeResolver } from "@/lib/type-resolver";
 import { toast } from "sonner";
 import { create } from "zustand";
-export type GeneratedTypes = {
-  name: string;
-  type: string[] | { [key: string]: string[] | undefined };
-}[];
 
 type UseCode = {
   input: string;
@@ -43,7 +38,7 @@ const useCode = create<UseCode>((set, get) => ({
   },
   convert() {
     const { input, rootTypeName } = get();
-    const { generatedTypes, isInvalidJSON } = new TypeGenerator(
+    const { resolvedTypes, isInvalidJSON } = new TypeGenerator(
       input,
       rootTypeName || "root",
     );
@@ -55,10 +50,12 @@ const useCode = create<UseCode>((set, get) => ({
       }
     } else {
       set({
-        resolvedTypes: typeResolver(generatedTypes),
-        isInvalidJSON: false,
+        resolvedTypes,
+        isInvalidJSON,
       });
+      localStorage.setItem("old-json", input);
     }
   },
+  // end
 }));
 export default useCode;

@@ -1,11 +1,11 @@
+import { getValidJSON } from "@/lib/format-json";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import AceEditor from "react-ace";
 import { TbClipboardText } from "react-icons/tb";
 import { toast } from "sonner";
 import useCode from "../hooks/useCode";
 import { Button } from "./ui/button";
-import { getValidJSON } from "@/lib/format-json";
 
 export default function CodeEditor() {
   const input = useCode((state) => state.input);
@@ -37,17 +37,6 @@ export default function CodeEditor() {
       );
     }
   }, []);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (getValidJSON(input)) {
-        localStorage.setItem("old-json", input);
-      }
-    }, 1000);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [input]);
 
   return (
     <div className="h-full w-full">
