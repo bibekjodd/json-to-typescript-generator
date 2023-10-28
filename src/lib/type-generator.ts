@@ -24,13 +24,13 @@ export class TypeGenerator {
 
   constructor(json: string, rootName: string) {
     this.#rootName = capitalize(rootName);
-    console.log(this.#rootName);
     const data = jsonFormatter(json);
-    console.log(data, "formatted-json");
-    this.#json = {
-      [this.#rootName]: data || {},
-    };
-    this.#generateTypes();
+    if (data) {
+      this.#json = {
+        [this.#rootName]: data,
+      };
+      this.#generateTypes();
+    }
   }
 
   #generateTypes() {
