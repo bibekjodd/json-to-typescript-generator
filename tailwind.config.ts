@@ -76,6 +76,7 @@ const config: Config = {
     require("tailwind-scrollbar-hide"),
     require("tailwindcss-animate"),
     require("daisyui"),
+    require("tailwind-scrollbar-hide"),
   ],
 
   daisyui: {

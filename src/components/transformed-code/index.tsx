@@ -2,18 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useCode from "@/hooks/useCode";
 import { MdContentCopy } from "react-icons/md";
-import SyntaxHighlighter from "react-syntax-highlighter/dist/esm/default-highlight";
-import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { toast } from "sonner";
+import MapCode from "./map-code";
 
 export default function TransformedCode() {
-  const generatedTypes = useCode((state) => state.generatedTypes);
   const rootTypeName = useCode((state) => state.rootTypeName);
   const rootTypeNameChanged = useCode((state) => state.rootTypeNameChanged);
 
   const copyToClipboard = () => {
     try {
-      navigator.clipboard.writeText(JSON.stringify(generatedTypes));
+      const generatedTypes =
+        document.getElementById("generated-types")?.innerText;
+      navigator.clipboard.writeText(generatedTypes || "");
       toast.success("Copied to clipboard");
     } catch (err) {
       toast.error("User has denied clipboard permission");
@@ -41,21 +41,8 @@ export default function TransformedCode() {
           </Button>
         </div>
       </div>
-      <section className="mt-5 bg-[#282a36]">
-        <SyntaxHighlighter
-          language="typescript"
-          style={atomOneDark}
-          customStyle={{
-            flex: "1",
-            background: "transparent",
-            height: "100%",
-            width: "100%",
-          }}
-          wrapLines
-          wrapLongLines
-        >
-          {JSON.stringify(generatedTypes)}
-        </SyntaxHighlighter>
+      <section id="generated-types" className="mt-5">
+        <MapCode />
       </section>
     </div>
   );

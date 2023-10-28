@@ -117,10 +117,10 @@ export class TypeGenerator {
           if (primitive) {
             this.#addUniqueToList(properties[key], primitive);
           } else if (isArray(item[key])) {
-            const typeName = this.#addNewType(keyName + "Item", item[key]);
+            const typeName = this.#addNewType(key, item[key]);
             this.#addUniqueToList(properties[key], typeName);
           } else if (isObject(item[key])) {
-            const typeName = this.#addNewType(keyName + "Item", item[key]);
+            const typeName = this.#addNewType(key, item[key]);
             this.#addUniqueToList(properties[key], typeName);
           }
         }

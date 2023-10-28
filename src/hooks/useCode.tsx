@@ -10,7 +10,9 @@ type UseCode = {
   rootTypeName: string;
   generatedTypes: GeneratedTypes;
   isInvalidJSON: boolean;
+  useInterface: boolean;
 
+  setUseInterface: (arg: boolean) => void;
   setIsInvalidJSON: (state: boolean) => void;
   inputChanged: (input: string) => void;
   convert: () => void;
@@ -26,12 +28,16 @@ const useCode = create<UseCode>((set, get) => ({
   }
 }
 `,
+  useInterface: false,
   rootTypeName: "",
   generatedTypes: [
     { name: "Root", type: { fruits: ["array", "string"], colors: ["Colors"] } },
     { name: "Colors", type: { orange: ["string"], lemon: ["string"] } },
   ],
   isInvalidJSON: false,
+  setUseInterface(arg) {
+    set({ useInterface: arg });
+  },
   inputChanged(input) {
     set({ input });
     get().convert();

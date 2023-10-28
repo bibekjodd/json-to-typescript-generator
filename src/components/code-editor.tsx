@@ -42,9 +42,9 @@ export default function CodeEditor() {
         </div>
       </div>
 
-      <div className="relative mt-5 flex h-full border-rose-900 bg-[#282a36] md:border-r-2">
+      <div className="relative mt-5 flex h-full border-rose-900  md:border-r-2">
         <textarea
-          className="absolute inset-0 resize-none bg-transparent p-2 font-mono text-transparent caret-white outline-none scrollbar-hide"
+          className="absolute inset-0 resize-none bg-transparent p-2 font-mono text-transparent caret-white outline-none "
           value={input}
           onChange={(e) => inputChanged(e.target.value)}
           autoFocus
