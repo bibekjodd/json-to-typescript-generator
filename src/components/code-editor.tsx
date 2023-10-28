@@ -47,6 +47,7 @@ export default function CodeEditor() {
           className="absolute inset-0 resize-none bg-transparent p-2 font-mono text-transparent caret-white outline-none scrollbar-hide"
           value={input}
           onChange={(e) => inputChanged(e.target.value)}
+          autoFocus
         />
         <SyntaxHighlighter
           language="typescript"

@@ -1,26 +1,14 @@
-import { TypeGenerator } from "./type-generator";
 import { isArray, isObject } from "./utils";
 
-export const converter = (
-  json: any,
-  rootTypeName: string,
-): { result: string; isError: boolean } => {
+export const jsonFormatter = (json: string): Object | undefined => {
   try {
     const data = JSON.parse(json);
     if (isObject(data) || isArray(data)) {
-      const result = new TypeGenerator(formatObject({ [rootTypeName]: data }));
-
-      return {
-        result: JSON.stringify(result),
-        isError: false,
-      };
+      return formatObject(data);
     }
-    throw new Error("");
+    return undefined;
   } catch (err) {
-    return {
-      result: "",
-      isError: true,
-    };
+    undefined;
   }
 };
 

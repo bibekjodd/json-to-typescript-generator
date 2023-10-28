@@ -7,13 +7,15 @@ import { Input } from "./ui/input";
 import { toast } from "sonner";
 
 export default function TransformedCode() {
-  const resolvedTypes = useCode((state) => state.resolvedTypes);
+  const generatedTypes = JSON.stringify(
+    useCode((state) => state.generatedTypes),
+  );
   const rootTypeName = useCode((state) => state.rootTypeName);
   const rootTypeNameChanged = useCode((state) => state.rootTypeNameChanged);
 
   const copyToClipboard = () => {
     try {
-      navigator.clipboard.writeText(resolvedTypes);
+      navigator.clipboard.writeText(generatedTypes);
       toast.success("Copied to clipboard");
     } catch (err) {
       toast.error("User has denied clipboard permission");
@@ -54,7 +56,7 @@ export default function TransformedCode() {
           wrapLines
           wrapLongLines
         >
-          {resolvedTypes}
+          {generatedTypes}
         </SyntaxHighlighter>
       </section>
     </div>
