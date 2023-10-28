@@ -6,6 +6,7 @@ import { TbClipboardText } from "react-icons/tb";
 import { toast } from "sonner";
 import useCode from "../hooks/useCode";
 import { Button } from "./ui/button";
+import { initialJSON } from "./constants";
 
 export default function CodeEditor() {
   const input = useCode((state) => state.input);
@@ -22,20 +23,13 @@ export default function CodeEditor() {
 
   useLayoutEffect(() => {
     try {
-      const oldJSON = localStorage.getItem("old-json") as string;
+      const oldJSON = localStorage.getItem("old-json");
+      if (!oldJSON) {
+        return inputChanged(initialJSON);
+      }
       const data = getValidJSON(oldJSON);
       if (data) inputChanged(oldJSON);
-    } catch (error) {
-      inputChanged(
-        `{
-  "fruits": ["apple", "mango", "banana", "orange"],
-  "colors": {
-    "orange": "#fa234c",
-    "lemon": "#22f3ce"
-  }
-}`,
-      );
-    }
+    } catch (error) {}
   }, []);
 
   return (
