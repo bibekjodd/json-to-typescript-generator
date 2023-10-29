@@ -40,6 +40,11 @@ export class TypeGenerator {
   #generateTypes() {
     const rootType = this.#generateTypesForObject(this.#json);
     this.#includedTypeNames[this.#rootName] = { count: 1 };
+    this.#includedTypes = this.#includedTypes.sort((a) => {
+      if (a.name === this.#rootName) return -1;
+      return 0;
+    });
+
     if (this.#includedTypes[0]?.name !== this.#rootName) {
       this.#includedTypes.unshift({
         name: capitalize(this.#rootName),
@@ -176,7 +181,7 @@ export class TypeGenerator {
         ? this.#generateTypesForArray(object, typeName)
         : this.#generateTypesForObject(object);
 
-    this.#includedTypes.unshift({
+    this.#includedTypes.push({
       name: typeName,
       object: JSON.stringify(object),
       type,
