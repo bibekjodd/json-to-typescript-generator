@@ -57,7 +57,7 @@ export default function CodeEditor() {
 
       <div className="bg relative mt-5 flex h-full border-rose-900 md:border-r-2">
         <AceEditor
-          className="h-full w-full "
+          className="h-full w-full"
           value={input}
           onChange={(input) => {
             inputChanged(input);
