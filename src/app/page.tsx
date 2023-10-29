@@ -1,9 +1,9 @@
-"use client";
-import CodeEditor from "@/components/code-editor";
-import TransformedCode from "@/components/transformed-code";
-import "ace-builds/src-noconflict/mode-typescript";
-import "ace-builds/src-noconflict/theme-one_dark";
-import "ace-builds/src-noconflict/ext-language_tools";
+'use client';
+import CodeEditor from '@/components/code-editor';
+import TransformedCode from '@/components/transformed-code';
+import 'ace-builds/src-noconflict/mode-typescript';
+import 'ace-builds/src-noconflict/theme-one_dark';
+import 'ace-builds/src-noconflict/ext-language_tools';
 
 export default function page() {
   return (

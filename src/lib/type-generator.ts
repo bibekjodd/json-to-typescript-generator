@@ -1,11 +1,11 @@
-import { capitalize, getKeysFromObjectArray, isArray, isObject } from "./utils";
-import { formatObject, getValidJSON } from "./format-json";
-import { GeneratedTypes, typeResolver } from "./type-resolver";
+import { capitalize, getKeysFromObjectArray, isArray, isObject } from './utils';
+import { formatObject, getValidJSON } from './format-json';
+import { GeneratedTypes, typeResolver } from './type-resolver';
 
 type GeneratedTypeForObjects = {
   [key: string]: string[] | GeneratedTypeForObjects | undefined;
 };
-type Primitive = "string" | "null" | "boolean" | "number";
+type Primitive = 'string' | 'null' | 'boolean' | 'number';
 type IncludedTypeNames = {
   [key: string]: { count: number } | undefined;
 };
@@ -17,11 +17,11 @@ type IncludedTypes = {
 
 export class TypeGenerator {
   #json = {} as Object;
-  #rootName = "root";
+  #rootName = 'root';
   #includedTypes = [] as IncludedTypes;
   #includedTypeNames = {} as IncludedTypeNames;
   #generatedTypes = [] as GeneratedTypes;
-  resolvedTypes = "";
+  resolvedTypes = '';
   isInvalidJSON = false;
 
   constructor(json: string, rootName: string) {
@@ -29,7 +29,7 @@ export class TypeGenerator {
     const data = getValidJSON(json);
     if (data) {
       this.#json = {
-        [this.#rootName]: formatObject(data),
+        [this.#rootName]: formatObject(data)
       };
       this.#generateTypes();
     }
@@ -49,23 +49,23 @@ export class TypeGenerator {
       this.#includedTypes.unshift({
         name: capitalize(this.#rootName),
         object: JSON.stringify([]),
-        type: rootType[this.#rootName] || {},
+        type: rootType[this.#rootName] || {}
       });
     }
 
     this.#generatedTypes = this.#includedTypes.map((type) => {
       return {
         name: type.name,
-        type: type.type,
+        type: type.type
       };
     });
   }
 
   #generateTypesForPrimitive(data: unknown): Primitive | undefined {
-    if (data === null) return "null";
-    if (typeof data === "number") return "number";
-    if (typeof data === "boolean") return "boolean";
-    if (typeof data === "string") return "string";
+    if (data === null) return 'null';
+    if (typeof data === 'number') return 'number';
+    if (typeof data === 'boolean') return 'boolean';
+    if (typeof data === 'string') return 'string';
     return undefined;
   }
 
@@ -90,11 +90,11 @@ export class TypeGenerator {
   }
 
   #generateTypesForArray(array: any[], keyName: string): string[] {
-    const type = ["array"];
+    const type = ['array'];
 
     // resolve for primitives
     const primitivesList = array.filter(
-      (item) => !!this.#generateTypesForPrimitive(item),
+      (item) => !!this.#generateTypesForPrimitive(item)
     );
     for (const item of primitivesList) {
       const primitive = this.#generateTypesForPrimitive(item);
@@ -104,7 +104,7 @@ export class TypeGenerator {
     // resolve for arrays
     const arraysList = array.filter((item) => isArray(item));
     for (const item of arraysList) {
-      const typeName = this.#addNewType(keyName + "Item", item);
+      const typeName = this.#addNewType(keyName + 'Item', item);
       this.#addUniqueToList(type, typeName);
     }
 
@@ -118,7 +118,7 @@ export class TypeGenerator {
       for (const key of allKeys) {
         properties[key] = properties[key] || [];
         if (!(key in item)) {
-          this.#addUniqueToList(properties[key], "optional");
+          this.#addUniqueToList(properties[key], 'optional');
         } else {
           const primitive = this.#generateTypesForPrimitive(item[key]);
           if (primitive) {
@@ -135,14 +135,14 @@ export class TypeGenerator {
     }
 
     const typeNameExists = this.#includedTypes.find(
-      (type) => JSON.stringify(properties) === type.object,
+      (type) => JSON.stringify(properties) === type.object
     );
     if (typeNameExists) {
       this.#addUniqueToList(type, typeNameExists.name);
       return type;
     }
 
-    let typeName = capitalize(keyName + "Item");
+    let typeName = capitalize(keyName + 'Item');
     let count = this.#includedTypeNames[typeName]?.count || 1;
     if (this.#includedTypeNames[typeName]) {
       count++;
@@ -152,7 +152,7 @@ export class TypeGenerator {
     this.#includedTypes.unshift({
       name: typeName,
       object: JSON.stringify(properties),
-      type: properties,
+      type: properties
     });
 
     this.#addUniqueToList(type, typeName);
@@ -163,7 +163,7 @@ export class TypeGenerator {
   #addNewType(typeName: string, object: any): string {
     typeName = capitalize(typeName);
     const typeExists = this.#includedTypes.find(
-      (type) => JSON.stringify(object) === type.object,
+      (type) => JSON.stringify(object) === type.object
     );
     if (typeExists) return typeExists.name;
 
@@ -184,7 +184,7 @@ export class TypeGenerator {
     this.#includedTypes.push({
       name: typeName,
       object: JSON.stringify(object),
-      type,
+      type
     });
     return typeName;
   }

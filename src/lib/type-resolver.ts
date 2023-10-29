@@ -14,7 +14,7 @@ export function typeResolver(generatedTypes: GeneratedTypes): string {
     const string = `export type ${name} = ${writtenString}`;
     return string;
   });
-  return typesString.join("\n\n");
+  return typesString.join('\n\n');
 }
 
 function resolveObject(object: Object): string {
@@ -22,17 +22,17 @@ function resolveObject(object: Object): string {
   const arrayString: string[] = entries.map((entry) => {
     const key = entry[0] as string;
     const value = entry[1] as string[];
-    const isOptional = value.includes("optional");
-    return `  ${key}${isOptional ? "?" : ""}: ${resolveArray(value)}`;
+    const isOptional = value.includes('optional');
+    return `  ${key}${isOptional ? '?' : ''}: ${resolveArray(value)}`;
   });
 
-  return `{\n${arrayString.join("\n")}\n}`;
+  return `{\n${arrayString.join('\n')}\n}`;
 }
 
 function resolveArray(array: string[]): string {
-  const isArray = array.includes("array");
-  array = array.filter((item) => item !== "array" && item !== "optional");
-  return `${isArray ? "Array<" : ""}${array.join(" | ")}${
-    isArray && array.length === 0 ? "any" : ""
-  }${isArray ? ">" : ""}`;
+  const isArray = array.includes('array');
+  array = array.filter((item) => item !== 'array' && item !== 'optional');
+  return `${isArray ? 'Array<' : ''}${array.join(' | ')}${
+    isArray && array.length === 0 ? 'any' : ''
+  }${isArray ? '>' : ''}`;
 }

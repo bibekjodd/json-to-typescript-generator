@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import useCode from "@/hooks/useCode";
-import { MdContentCopy } from "react-icons/md";
-import { toast } from "sonner";
-import AceEditor from "react-ace";
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import useCode from '@/hooks/useCode';
+import { MdContentCopy } from 'react-icons/md';
+import { toast } from 'sonner';
+import AceEditor from 'react-ace';
 
 export default function TransformedCode() {
   const rootTypeName = useCode((state) => state.rootTypeName);
@@ -13,9 +13,9 @@ export default function TransformedCode() {
   const copyToClipboard = () => {
     try {
       navigator.clipboard.writeText(resolvedTypes);
-      toast.success("Copied to clipboard");
+      toast.success('Copied to clipboard');
     } catch (err) {
-      toast.error("User has denied clipboard permission");
+      toast.error('User has denied clipboard permission');
     }
   };
 
@@ -62,7 +62,7 @@ export default function TransformedCode() {
             showGutter: false,
             showInvisibles: false,
             showPrintMargin: false,
-            tabSize: 2,
+            tabSize: 2
           }}
         />
       </section>

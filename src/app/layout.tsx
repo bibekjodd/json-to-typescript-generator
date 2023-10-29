@@ -1,19 +1,19 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { Toaster } from "sonner";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import { Toaster } from 'sonner';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "JSON to Typescript Types Generator",
+  title: 'JSON to Typescript Types Generator',
   description:
-    "Generate Typescript types from JSON. Paste and Generate typescript types from JSON.",
-  authors: { name: "bibekjodd", url: "https://github.com/bibekjodd" },
+    'Generate Typescript types from JSON. Paste and Generate typescript types from JSON.',
+  authors: { name: 'bibekjodd', url: 'https://github.com/bibekjodd' }
 };
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {

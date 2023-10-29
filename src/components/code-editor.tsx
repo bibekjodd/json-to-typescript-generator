@@ -1,12 +1,12 @@
-import { getValidJSON } from "@/lib/format-json";
-import { TrashIcon } from "@heroicons/react/24/outline";
-import { useLayoutEffect } from "react";
-import AceEditor from "react-ace";
-import { TbClipboardText } from "react-icons/tb";
-import { toast } from "sonner";
-import useCode from "../hooks/useCode";
-import { Button } from "./ui/button";
-import { initialJSON } from "./constants";
+import { getValidJSON } from '@/lib/format-json';
+import { TrashIcon } from '@heroicons/react/24/outline';
+import { useLayoutEffect } from 'react';
+import AceEditor from 'react-ace';
+import { TbClipboardText } from 'react-icons/tb';
+import { toast } from 'sonner';
+import useCode from '../hooks/useCode';
+import { Button } from './ui/button';
+import { initialJSON } from './constants';
 
 export default function CodeEditor() {
   const input = useCode((state) => state.input);
@@ -17,13 +17,13 @@ export default function CodeEditor() {
       const text = await navigator.clipboard.readText();
       inputChanged(text);
     } catch (error) {
-      toast.error("User has denied clipboard permission");
+      toast.error('User has denied clipboard permission');
     }
   };
 
   useLayoutEffect(() => {
     try {
-      const oldJSON = localStorage.getItem("old-json");
+      const oldJSON = localStorage.getItem('old-json');
       if (!oldJSON) {
         return inputChanged(initialJSON);
       }
@@ -46,7 +46,7 @@ export default function CodeEditor() {
             <TbClipboardText className="h-5 w-5" />
           </Button>
           <Button
-            onClick={() => inputChanged("")}
+            onClick={() => inputChanged('')}
             className="space-x-2 bg-white/70 hover:bg-white/60 active:bg-white/50"
           >
             <span>clear</span>
@@ -77,7 +77,7 @@ export default function CodeEditor() {
             showGutter: false,
             showInvisibles: false,
             showPrintMargin: false,
-            tabSize: 2,
+            tabSize: 2
           }}
         />
       </div>
