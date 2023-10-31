@@ -1,11 +1,9 @@
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import useCode from '@/hooks/useCode';
+import AceEditor from 'react-ace';
 import { MdContentCopy } from 'react-icons/md';
 import { toast } from 'sonner';
-import AceEditor from 'react-ace';
 
-export default function TransformedCode() {
+export default function Result() {
   const rootTypeName = useCode((state) => state.rootTypeName);
   const rootTypeNameChanged = useCode((state) => state.rootTypeNameChanged);
   const resolvedTypes = useCode((state) => state.resolvedTypes);
@@ -20,32 +18,36 @@ export default function TransformedCode() {
   };
 
   return (
-    <div className="h-full w-full  text-black">
-      <div className="flex items-center pt-10 md:px-4 md:pt-0">
-        <h3 className="mr-auto text-lg font-bold text-white">Typescript</h3>
+    <div className="flex h-full w-full flex-col pt-5 lg:pl-5 lg:pt-0">
+      <div className="flex flex-wrap items-center pb-3 sm:h-20 sm:pb-0">
+        <h3 className="mr-auto py-2 text-2xl font-bold text-[#3178c6] sm:py-0 lg:text-3xl">
+          Typescript
+        </h3>
         <div className="flex flex-shrink items-center space-x-3">
-          <Input
-            className="w-full bg-white/70 text-black placeholder:text-black/70"
+          <input
+            type="text"
             value={rootTypeName}
             onChange={(e) => rootTypeNameChanged(e.target.value)}
             placeholder="Root Type Name..."
+            className="h-10 flex-shrink flex-grow rounded-sm bg-white/10 px-2 font-mono text-neutral-300 outline-none ring-2 ring-transparent placeholder:text-neutral-400 focus:ring-sky-800 lg:px-3"
           />
 
-          <Button
+          <button
             onClick={copyToClipboard}
-            className="space-x-2 bg-white/70 hover:bg-white/60 active:bg-white/50"
+            className="inline-flex h-10 flex-shrink-0 items-center justify-center space-x-2  rounded-sm bg-neutral-600/50 px-3 py-2 font-medium text-neutral-300 transition-all active:scale-95"
           >
-            <span>copy</span>
+            <span>Copy</span>
             <MdContentCopy className="h-5 w-5" />
-          </Button>
+          </button>
         </div>
       </div>
+
       <section
         id="generated-types"
-        className="mt-5 h-full w-full overflow-y-auto md:pl-10 lg:pl-0"
+        className="flex flex-1 items-center bg-[#282c34] p-2"
       >
         <AceEditor
-          className="flex-1"
+          className="min-h-[300px] flex-1"
           value={resolvedTypes}
           mode="typescript"
           theme="one_dark"
@@ -55,6 +57,9 @@ export default function TransformedCode() {
           width="100%"
           height="100%"
           wrapEnabled
+          style={{
+            lineHeight: 1.5
+          }}
           setOptions={{
             enableLiveAutocompletion: false,
             showLineNumbers: false,
